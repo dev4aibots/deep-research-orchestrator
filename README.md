@@ -1,5 +1,7 @@
 # Deep Research Orchestrator
 
+![Terminal Demo](demo.gif)
+
 An agentic workflow designed for long-horizon planning and deep research tasks.
 
 ## Tech Stack
@@ -27,6 +29,8 @@ This project is deployed as a serverless backend on Vercel. You can test the API
 
 ```bash
 # Example Request
+
+![Terminal Demo](demo.gif)
 curl -X GET https://deep-research-orchestrator-106ac3api-dev4aibots.vercel.app/api/health
 ```
 
