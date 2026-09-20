@@ -8,12 +8,12 @@
 
 > **An agentic workflow designed for long-horizon planning and deep research tasks across the web.**
 
-## 🌟 Key Features
-- ✅ **Hierarchical agent delegation pattern**
-- ✅ **Robust web scraping and parsing**
-- ✅ **Long-context synthesis for academic/market research**
+## Key Features
+- **Hierarchical agent delegation pattern**
+- **Robust web scraping and parsing**
+- **Long-context synthesis for academic/market research**
 
-## 🏗️ Architecture
+## Architecture
 
 ```mermaid
 flowchart TD
@@ -26,7 +26,7 @@ flowchart TD
     F --> G[Final Research Report]
 ```
 
-## 🚀 Live API Endpoint (Vercel)
+## Live API Endpoint (Vercel)
 
 This project is deployed serverless via Vercel Edge Functions. You can test the interaction directly from your terminal.
 
@@ -35,7 +35,7 @@ This project is deployed serverless via Vercel Edge Functions. You can test the 
 curl -X GET https://deep-research-orchestrator-106ac3api-dev4aibots.vercel.app/api/health
 ```
 
-## 💻 Developer Quickstart
+## Developer Quickstart
 
 ### Prerequisites
 - Python 3.11+
@@ -67,7 +67,7 @@ curl -X GET https://deep-research-orchestrator-106ac3api-dev4aibots.vercel.app/a
    npm run dev
    ```
 
-## 📁 Project Structure
+## Project Structure
 ```
 .
 ├── api/                  # Vercel serverless endpoints
@@ -78,5 +78,5 @@ curl -X GET https://deep-research-orchestrator-106ac3api-dev4aibots.vercel.app/a
 └── vercel.json           # Vercel routing configuration
 ```
 
-## 📄 License
+## License
 This project is licensed under the MIT License.
