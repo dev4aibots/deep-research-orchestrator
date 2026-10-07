@@ -1,5 +1,9 @@
 # Deep Research Orchestrator
 
+> 🧪 **Learning build** — a course/tutorial project for studying agentic deep-research workflows. Not a production system.
+
+> **Status:** Reference / learning code. The scaffold runs locally for experimentation; it is not deployed, has no production users, and has not been hardened for production use.
+
 Agentic workflow for long-horizon planning and deep web research, synthesizing massive context.
 
 [ Demo ] [ Architecture ] [ API Docs ] [ Evaluation ]
@@ -9,7 +13,7 @@ Agentic workflow for long-horizon planning and deep web research, synthesizing m
 Python • Playwright • Celery • LangChain
 
 ## What it does
-Agentic workflow for long-horizon planning and deep web research, synthesizing massive context. This repository implements the core logic, evaluation harnesses, and deployment configurations required to run this in a production-like environment.
+Agentic workflow for long-horizon planning and deep web research, synthesizing massive context. This repository is a learning scaffold — core logic, evaluation harnesses, and example configs for study and experimentation, not hardened for production use.
 
 ## Execution Trace (Proof of Work)
 
