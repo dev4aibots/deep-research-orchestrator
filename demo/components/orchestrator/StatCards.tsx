@@ -22,19 +22,19 @@ export function StatCards({ run, phase }: Props) {
 
   const cards = [
     {
-      label: "Nodes explored",
-      value: stats ? String(stats.nodesExplored) : "—",
+      label: "Ideas tried",
+      value: stats ? String(stats.nodesExplored) : "–",
       sub: null as React.ReactNode,
     },
     {
       label: "Budget spent (simulated)",
-      value: stats ? `$${stats.spent.toFixed(2)}` : "—",
+      value: stats ? `$${stats.spent.toFixed(2)}` : "–",
       sub: stats ? (
         <div className="mt-2">
           <Progress value={Math.min(100, budgetPct)} />
           <p
             className="text-ink-secondary mt-1"
-            style={{ fontSize: "var(--meta-text-caption)" }}
+            style={{ fontSize: "var(--fs-caption)" }}
           >
             of ${stats.budget.toFixed(2)} budget
           </p>
@@ -42,20 +42,20 @@ export function StatCards({ run, phase }: Props) {
       ) : null,
     },
     {
-      label: "Failed nodes (simulated)",
-      value: stats ? String(stats.failed) : "—",
+      label: "Failed ideas (simulated)",
+      value: stats ? String(stats.failed) : "–",
       sub:
         stats && stats.failed > 0 ? (
-          <Badge className="bg-alert text-white mt-2">
+          <Badge className="bg-alert-bg text-ink mt-2">
             {stats.failed} {stats.failed === 1 ? "failure" : "failures"}
           </Badge>
         ) : stats ? (
-          <Badge className="bg-positive text-white mt-2">none</Badge>
+          <Badge className="bg-positive-bg text-ink mt-2">none</Badge>
         ) : null,
     },
     {
       label: "Best loss (simulated)",
-      value: bestLoss !== null ? bestLoss.toFixed(3) : "—",
+      value: bestLoss !== null ? bestLoss.toFixed(3) : "–",
       sub: null,
     },
   ];
@@ -74,13 +74,13 @@ export function StatCards({ run, phase }: Props) {
               <>
                 <p
                   className="text-ink-secondary"
-                  style={{ fontSize: "var(--meta-text-secondary)" }}
+                  style={{ fontSize: "var(--fs-body)" }}
                 >
                   {c.label}
                 </p>
                 <p
-                  className="font-bold text-ink mt-1"
-                  style={{ fontSize: "var(--meta-text-h1)" }}
+                  className="font-display font-bold text-ink mt-1"
+                  style={{ fontSize: "var(--fs-h1)" }}
                 >
                   {c.value}
                 </p>

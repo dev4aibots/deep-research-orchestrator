@@ -1,13 +1,22 @@
+@import "open-props/easings.min.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 /*
- * Meta design-token table (DESIGN.md §3) — implemented VERBATIM.
+ * Meta design-token table (design/DESIGN.md §3) + redesign layer
+ * (DESIGN-SYSTEM.md §7: Meta blues used sparingly on warm neutrals).
+ *
+ * Brand blues, text, and status tokens are verbatim FDS values.
+ * Neutral surfaces are warmed per the redesign direction:
+ *   --meta-app-bg / --meta-card-flat / --meta-wash / --meta-divider
+ * shifted from the cool FB wash to warm neutrals; brand blues untouched.
+ *
+ * Type scale is fluid (lib/type-scale.ts, ratio 1.25, clamp everywhere).
  * Components must read these vars; never use raw hex/px in components.
  */
 :root {
-  /* ---- Brand (Meta official logo color codes) ---- */
+  /* ---- Brand (Meta official logo color codes — verbatim FDS) ---- */
   --meta-brand-primary: #0668e1;
   --meta-brand-fb: #1877f2;
   --meta-brand-deep: #0064d1;
@@ -18,32 +27,34 @@
   --meta-toggle-active-bg: #e7f3ff;
   --meta-text-highlight: rgba(24, 119, 242, 0.2);
 
-  /* ---- Surfaces (Facebook web product) ---- */
-  --meta-app-bg: #f0f2f5;
+  /* ---- Surfaces (warm neutrals per redesign §7; card stays FDS white) ---- */
+  --meta-app-bg: #f4f2ed;
   --meta-card: #ffffff;
-  --meta-card-flat: #f7f8fa;
-  --meta-wash: #e4e6eb;
+  --meta-card-flat: #faf8f4;
+  --meta-wash: #e9e4da;
 
-  /* ---- Text (FDS) ---- */
+  /* ---- Text (FDS — verbatim) ---- */
   --meta-text-primary: #050505;
   --meta-text-secondary: #65676b;
   --meta-text-disabled: #bcc0c4;
   --meta-text-inverse: #ffffff;
   --meta-text-header: #1c2b33;
 
-  /* ---- Borders / dividers (FDS) ---- */
-  --meta-divider: #ced0d4;
-  --meta-input-border: #ced0d4;
+  /* ---- Borders / dividers (warmed) ---- */
+  --meta-divider: #d9d3c6;
+  --meta-input-border: #d9d3c6;
 
-  /* ---- Buttons (FDS) ---- */
+  /* ---- Buttons (FDS — verbatim) ---- */
   --meta-button-secondary-bg: #e4e6eb;
   --meta-button-secondary-text: #050505;
 
-  /* ---- Status ---- */
+  /* ---- Status (FDS — verbatim) ---- */
   --meta-positive: #31a24c;
   --meta-positive-bg: #deefe1;
   --meta-negative: #e41e3f;
   --meta-alert-red: #fa383e;
+  --meta-alert-bg: #fde9ec; /* derived light-red tint for FAIL badges (AA with dark text) */
+  --meta-text-danger: #c92a33; /* darkened red — passes AA for text on white/card-flat */
   --meta-warning-amber: #f7b928;
 
   /* ---- Radius (FDS) ---- */
@@ -54,29 +65,44 @@
   --meta-radius-lg: 12px;
   --meta-radius-full: 999px;
 
-  /* ---- Shadows (FDS) ---- */
+  /* ---- Shadows (FDS whispers) ---- */
   --meta-shadow-1: rgba(0, 0, 0, 0.1);
   --meta-shadow-2: rgba(0, 0, 0, 0.2);
   --meta-shadow-card: 0 1px 2px rgba(0, 0, 0, 0.1);
   --meta-shadow-elevated: 0 8px 20px 0 rgba(0, 0, 0, 0.2),
     0 2px 4px 0 rgba(0, 0, 0, 0.1);
 
-  /* ---- Typography ---- */
-  --meta-font-ui: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Helvetica, Arial, sans-serif;
+  /* ---- Typography ----
+   * Display voice: Archivo variable (§7 neo-grotesque Meta voice), Expanded
+   * for headlines. Body: same family, normal width — one typeface total,
+   * mono reserved for code. latin subset preloaded via fontsource import. */
+  --meta-font-display: "Archivo", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Helvetica, Arial, sans-serif;
+  --meta-font-ui: "Archivo", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Helvetica, Arial, sans-serif;
   --meta-font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas,
     "Liberation Mono", monospace;
 
-  /* ---- Type scale ---- */
-  --meta-text-hero: 40px;
-  --meta-text-h1: 28px;
-  --meta-text-h2: 20px;
-  --meta-text-h3: 17px;
-  --meta-text-body: 15px;
-  --meta-text-secondary: 13px;
-  --meta-text-caption: 12px;
+  /* ---- Fluid type scale (lib/type-scale.ts: ratio 1.25, base 15px,
+   * swing ±8% between 320px and 1200px viewports) ---- */
+  --fs-caption: clamp(11.04px, 10.34px + 0.00218 * 100vw, 12.96px);
+  --fs-body: clamp(13.80px, 12.93px + 0.00273 * 100vw, 16.20px);
+  --fs-lead: clamp(17.25px, 16.16px + 0.00341 * 100vw, 20.25px);
+  --fs-h3: clamp(21.56px, 20.20px + 0.00426 * 100vw, 25.31px);
+  --fs-h2: clamp(26.95px, 25.25px + 0.00533 * 100vw, 31.64px);
+  --fs-h1: clamp(33.69px, 31.56px + 0.00666 * 100vw, 39.55px);
+  --fs-hero: clamp(42.11px, 39.45px + 0.00832 * 100vw, 49.44px);
 
-  /* ---- Spacing (4px base) ---- */
+  /* Legacy aliases — kept so existing references keep resolving. */
+  --meta-text-hero: var(--fs-hero);
+  --meta-text-h1: var(--fs-h1);
+  --meta-text-h2: var(--fs-h2);
+  --meta-text-h3: var(--fs-h3);
+  --meta-text-body: var(--fs-body);
+  --meta-text-secondary: var(--fs-caption);
+  --meta-text-caption: var(--fs-caption);
+
+  /* ---- Spacing (4px base, Meta-density) ---- */
   --meta-space-1: 4px;
   --meta-space-2: 8px;
   --meta-space-3: 12px;
@@ -86,12 +112,13 @@
   --meta-space-8: 32px;
   --meta-space-12: 48px;
 
-  /* ---- Motion (functional only) ---- */
+  /* ---- Motion (functional only; easings from open-props) ---- */
   --meta-motion-micro: 100ms;
   --meta-motion-short: 200ms;
   --meta-motion-medium: 300ms;
   --meta-motion-long: 500ms;
-  --meta-easing-hover: ease-out;
+  --meta-easing-hover: var(--ease-out-3);
+  --meta-easing-reveal: var(--ease-out-3);
 
   /* ---- Z-index ---- */
   --meta-z-default: 1;
@@ -134,8 +161,19 @@
   body {
     @apply bg-background text-foreground;
     font-family: var(--meta-font-ui);
-    font-size: var(--meta-text-body);
+    font-size: var(--fs-body);
+    line-height: 1.6;
     -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+}
+
+/* Display voice: Archivo Expanded, tight tracking — the neo-grotesque headline. */
+@layer components {
+  .font-display {
+    font-family: var(--meta-font-display);
+    font-stretch: 125%;
+    letter-spacing: -0.025em;
   }
 }
 
@@ -154,7 +192,63 @@
   }
 }
 
+/* ---- Motion choreography (transform/opacity only; §4 rule 4) ---- */
+
+/* Tree nodes pop in as the reveal counter uncovers them (keyed by node id,
+ * so only newly mounted nodes animate). */
+@keyframes node-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+.node-enter {
+  animation: node-pop var(--meta-motion-medium) var(--meta-easing-reveal);
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+/* Best-branch steps stagger in (set --i per index, capped at 7 → 420ms max). */
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.branch-step {
+  animation: rise-in var(--meta-motion-medium) var(--meta-easing-reveal) both;
+  animation-delay: calc(min(var(--i, 0), 7) * 60ms);
+}
+
+/* Run-log lines stream in one by one. */
+@keyframes log-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.log-line {
+  animation: log-in var(--meta-motion-short) var(--ease-out-3);
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .node-enter,
+  .branch-step,
+  .log-line {
+    animation: none;
+  }
   *,
   *::before,
   *::after {

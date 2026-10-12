@@ -30,30 +30,17 @@ export function ControlPanel({ params, onChange, onRun, onReset, running }: Prop
   return (
     <Card className="shadow-card">
       <CardHeader className="pb-3">
-        <CardTitle style={{ fontSize: "var(--meta-text-h3)" }}>
-          Search controls
+        <CardTitle className="font-display" style={{ fontSize: "var(--fs-h3)" }}>
+          Search settings
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-5">
         <div className="space-y-2">
-          <Label htmlFor="seed">Seed hypothesis</Label>
-          <Input
-            id="seed"
-            value={params.seed}
-            onChange={(e) => onChange({ ...params, seed: e.target.value })}
-            placeholder="a hypothesis to explore"
-            maxLength={500}
-            className="font-mono"
-            style={{ fontSize: "var(--meta-text-secondary)" }}
-          />
-        </div>
-
-        <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <Label htmlFor="budget">Budget (simulated $)</Label>
+            <Label htmlFor="budget">Pretend budget ($)</Label>
             <span
               className="font-semibold text-ink"
-              style={{ fontSize: "var(--meta-text-secondary)" }}
+              style={{ fontSize: "var(--fs-body)" }}
             >
               ${params.budget}
             </span>
@@ -65,22 +52,23 @@ export function ControlPanel({ params, onChange, onRun, onReset, running }: Prop
             step={1}
             value={params.budget}
             onValueChange={(v) => onChange({ ...params, budget: sliderVal(v) })}
-            aria-label="budget in simulated dollars"
+            aria-label="pretend budget in dollars"
           />
           <p
             className="text-ink-secondary"
-            style={{ fontSize: "var(--meta-text-caption)" }}
+            style={{ fontSize: "var(--fs-caption)" }}
           >
-            Search stops when spend ≥ budget. One experiment may overshoot it.
+            The search stops when spend reaches the budget. One experiment may
+            push it slightly over.
           </p>
         </div>
 
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <Label htmlFor="maxnodes">Max nodes</Label>
+            <Label htmlFor="maxnodes">Ideas to try, at most</Label>
             <span
               className="font-semibold text-ink"
-              style={{ fontSize: "var(--meta-text-secondary)" }}
+              style={{ fontSize: "var(--fs-body)" }}
             >
               {params.maxNodes}
             </span>
@@ -92,19 +80,19 @@ export function ControlPanel({ params, onChange, onRun, onReset, running }: Prop
             step={1}
             value={params.maxNodes}
             onValueChange={(v) => onChange({ ...params, maxNodes: sliderVal(v) })}
-            aria-label="max nodes"
+            aria-label="maximum ideas to try"
           />
           <p
             className="text-ink-secondary"
-            style={{ fontSize: "var(--meta-text-caption)" }}
+            style={{ fontSize: "var(--fs-caption)" }}
           >
-            The guard is checked per pop; each expansion adds 5, so counts may
-            overshoot this number.
+            Checked each time the search picks its next idea. Every pick adds
+            five, so the count can land a little above this number.
           </p>
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="rngseed">RNG seed</Label>
+          <Label htmlFor="rngseed">Random seed</Label>
           <Input
             id="rngseed"
             type="number"
@@ -119,14 +107,20 @@ export function ControlPanel({ params, onChange, onRun, onReset, running }: Prop
             }
             className="w-40"
           />
+          <p
+            className="text-ink-secondary"
+            style={{ fontSize: "var(--fs-caption)" }}
+          >
+            Change it for a different tree. Keep it to replay the same one.
+          </p>
         </div>
 
         <div className="flex gap-2 pt-1">
           <Button onClick={onRun} disabled={running || params.seed.trim().length === 0} className="flex-1">
             <Play className="mr-2 h-4 w-4" />
-            {running ? "Running…" : "Run search"}
+            {running ? "Running…" : "Run the search"}
           </Button>
-          <Button variant="secondary" onClick={onReset} disabled={running} aria-label="reset controls">
+          <Button variant="secondary" onClick={onReset} disabled={running} aria-label="reset the search settings">
             <RotateCcw className="h-4 w-4" />
           </Button>
         </div>
@@ -136,13 +130,13 @@ export function ControlPanel({ params, onChange, onRun, onReset, running }: Prop
         <div>
           <h3
             className="font-semibold text-ink mb-2"
-            style={{ fontSize: "var(--meta-text-secondary)" }}
+            style={{ fontSize: "var(--fs-body)" }}
           >
-            Dry-run plan — what the first expansion will do
+            What the first five ideas will be
           </h3>
           <ol
             className="list-decimal list-inside space-y-1 text-ink-secondary font-mono"
-            style={{ fontSize: "var(--meta-text-caption)" }}
+            style={{ fontSize: "var(--fs-caption)" }}
           >
             {EXPANSION_PREVIEW.map((h) => (
               <li key={h}>{h}</li>
@@ -150,12 +144,12 @@ export function ControlPanel({ params, onChange, onRun, onReset, running }: Prop
           </ol>
           <p
             className="text-ink-secondary mt-2"
-            style={{ fontSize: "var(--meta-text-caption)", lineHeight: 1.45 }}
+            style={{ fontSize: "var(--fs-caption)", lineHeight: 1.5 }}
           >
-            Children are proposed by fixed small-edit expansion — no LLM
-            planner. Best-first order by score =
-            0.4·novelty + 0.5·quality + 0.1·budget-weight. Failures are
-            simulated (10% draw), never expanded.
+            Ideas come from small fixed edits to one knob at a time — no model
+            plans them. Ideas are picked best-first: 0.4 × novelty + 0.5 ×
+            quality + 0.1 × budget left. About one in ten fails, and failed
+            ideas are never picked again.
           </p>
         </div>
       </CardContent>

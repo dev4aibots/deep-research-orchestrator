@@ -114,7 +114,7 @@ export function nodeScore(node: ResearchNode, remainingBudget: number): number {
 }
 
 // ---------------------------------------------------------------------------
-// stub planner — propose children by small-edit expansion
+// stub planner: propose children by small-edit expansion
 // ---------------------------------------------------------------------------
 
 /**
@@ -145,7 +145,7 @@ export function expand(node: ResearchNode, nextId: number): ResearchNode[] {
 }
 
 // ---------------------------------------------------------------------------
-// sandbox execution — stubbed; fake but reproducible metrics
+// sandbox execution: stubbed; fake but reproducible metrics
 // ---------------------------------------------------------------------------
 
 export function runExperiment(node: ResearchNode, rng: RngLike): void {
@@ -169,7 +169,7 @@ export function runExperiment(node: ResearchNode, rng: RngLike): void {
 }
 
 // ---------------------------------------------------------------------------
-// verify step — sanity check results before scoring
+// verify step: sanity check results before scoring
 // ---------------------------------------------------------------------------
 
 export function verify(node: ResearchNode): boolean {
@@ -235,7 +235,7 @@ class MinHeap {
 }
 
 // ---------------------------------------------------------------------------
-// tree search — best-first with budget and max nodes
+// tree search: best-first with budget and max nodes
 // ---------------------------------------------------------------------------
 
 export function treeSearch(seed: string, opts: TreeSearchOptions = {}): TreeSearchResult {

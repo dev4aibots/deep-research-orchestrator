@@ -120,14 +120,14 @@ export function TreeExplorer(props: Props) {
     <Card className="shadow-card">
       <CardHeader className="pb-2">
         <div className="flex flex-wrap items-center gap-2">
-          <CardTitle style={{ fontSize: "var(--meta-text-h3)" }}>
-            Tree explorer
+          <CardTitle style={{ fontSize: "var(--fs-h3)" }}>
+            Search graph
           </CardTitle>
           {props.animating && (
             <div className="ml-auto flex items-center gap-2">
               <span
                 className="text-ink-secondary font-mono"
-                style={{ fontSize: "var(--meta-text-caption)" }}
+                style={{ fontSize: "var(--fs-caption)" }}
               >
                 step {Math.min(revealed, events.length)} / {events.length}
               </span>
@@ -161,14 +161,14 @@ export function TreeExplorer(props: Props) {
             <span
               key={l.label}
               className="flex items-center gap-1.5 text-ink-secondary"
-              style={{ fontSize: "var(--meta-text-caption)" }}
+              style={{ fontSize: "var(--fs-caption)" }}
             >
               <LegendDot fill={l.fill} stroke={l.stroke} /> {l.label}
             </span>
           ))}
           <span
             className="flex items-center gap-1.5 text-ink-secondary"
-            style={{ fontSize: "var(--meta-text-caption)" }}
+            style={{ fontSize: "var(--fs-caption)" }}
           >
             <svg width="14" height="14" aria-hidden>
               <circle cx="7" cy="7" r="6" fill="none" stroke="var(--meta-blue-link)" strokeWidth={3} />
@@ -188,9 +188,9 @@ export function TreeExplorer(props: Props) {
           <div className="px-4 pb-8 pt-4 text-center">
             <p
               className="text-ink-secondary"
-              style={{ fontSize: "var(--meta-text-body)" }}
+              style={{ fontSize: "var(--fs-body)" }}
             >
-              No search yet — press <strong>Run search</strong> to grow the tree.
+              No search yet. Type a question above, then press <strong>Run the search</strong>.
             </p>
           </div>
         )}
@@ -245,6 +245,7 @@ export function TreeExplorer(props: Props) {
                   return (
                     <g
                       key={id}
+                      className="node-enter"
                       transform={`translate(${p.x},${p.y})`}
                       onClick={() => props.onSelect(id)}
                       style={{ cursor: "pointer" }}
@@ -274,14 +275,14 @@ export function TreeExplorer(props: Props) {
                       />
                       {st === "fail" && (
                         <g transform="translate(14,-22)">
-                          <rect width="42" height="18" rx="4" fill="var(--meta-alert-red)" />
+                          <rect width="42" height="18" rx="4" fill="var(--meta-alert-bg)" />
                           <text
                             x="21"
                             y="13"
                             textAnchor="middle"
-                            fill="var(--meta-text-inverse)"
+                            fill="var(--meta-text-primary)"
                             fontWeight={700}
-                            style={{ fontSize: "var(--meta-text-caption)" }}
+                            style={{ fontSize: "var(--fs-caption)" }}
                             fontFamily="var(--meta-font-ui)"
                           >
                             FAIL
@@ -293,7 +294,7 @@ export function TreeExplorer(props: Props) {
                         textAnchor="middle"
                         fill="var(--meta-text-secondary)"
                         fontFamily="var(--meta-font-mono)"
-                        style={{ fontSize: "var(--meta-text-caption)" }}
+                        style={{ fontSize: "var(--fs-caption)" }}
                       >
                         #{String(id).padStart(2, "0")}
                       </text>

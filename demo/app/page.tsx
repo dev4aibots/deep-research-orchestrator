@@ -1,9 +1,11 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { MotionConfig } from "motion/react";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { TopBar } from "@/components/orchestrator/TopBar";
 import { HeroStrip } from "@/components/orchestrator/HeroStrip";
+import { HowItWorks } from "@/components/orchestrator/HowItWorks";
 import { ControlPanel } from "@/components/orchestrator/ControlPanel";
 import { TreeExplorer } from "@/components/orchestrator/TreeExplorer";
 import { NodeInspector } from "@/components/orchestrator/NodeInspector";
@@ -98,87 +100,102 @@ export default function Page() {
   const busy = phase === "loading" || animating;
 
   return (
-    <TooltipProvider>
-      <TopBar />
-      <HeroStrip onRun={runSearch} />
+    <MotionConfig reducedMotion="user">
+      <TooltipProvider>
+        <TopBar />
+        <HeroStrip
+          seed={params.seed}
+          onSeedChange={(seed) => setParams((p) => ({ ...p, seed }))}
+          onRun={runSearch}
+          running={busy}
+        />
 
-      <main className="max-w-[1200px] mx-auto px-4 py-6 space-y-5">
-        {error && (
-          <div
-            role="alert"
-            className="rounded-md border border-alert bg-card p-4"
-          >
-            <p className="font-semibold text-alert-red" style={{ fontSize: "var(--meta-text-body)" }}>
-              Run rejected (400)
-            </p>
-            <p
-              className="text-ink-secondary font-mono mt-1"
-              style={{ fontSize: "var(--meta-text-secondary)" }}
+        <main className="max-w-[1200px] mx-auto px-4 py-6 space-y-5">
+          {error && (
+            <div
+              role="alert"
+              className="rounded-md border border-alert bg-card p-4"
             >
-              {error}
-            </p>
+              <p className="font-semibold text-danger" style={{ fontSize: "var(--fs-body)" }}>
+                The search couldn&apos;t start
+              </p>
+              <p
+                className="text-ink-secondary font-mono mt-1"
+                style={{ fontSize: "var(--fs-body)" }}
+              >
+                {error}
+              </p>
+              <p
+                className="text-ink-secondary mt-1"
+                style={{ fontSize: "var(--fs-caption)" }}
+              >
+                Fix the question above and press Run the search again.
+              </p>
+            </div>
+          )}
+
+          <HowItWorks />
+
+          <div ref={resultsRef} className="scroll-mt-[72px] grid gap-5 lg:grid-cols-[380px_minmax(0,1fr)]">
+            <ControlPanel
+              params={params}
+              onChange={setParams}
+              onRun={runSearch}
+              onReset={reset}
+              running={busy}
+            />
+            <TreeExplorer
+              nodes={run?.nodes ?? null}
+              events={run?.events ?? []}
+              revealed={revealed}
+              bestBranch={run?.bestBranch ?? []}
+              done={phase === "done"}
+              animating={animating}
+              paused={paused}
+              loading={phase === "loading"}
+              onTogglePause={() => setPaused((p) => !p)}
+              onReplay={replay}
+              selected={selected}
+              onSelect={(id) => setSelected(id)}
+            />
           </div>
-        )}
 
-        <div ref={resultsRef} className="scroll-mt-[72px] grid gap-5 lg:grid-cols-[380px_minmax(0,1fr)]">
-          <ControlPanel
-            params={params}
-            onChange={setParams}
-            onRun={runSearch}
-            onReset={reset}
-            running={busy}
-          />
-          <TreeExplorer
-            nodes={run?.nodes ?? null}
-            events={run?.events ?? []}
-            revealed={revealed}
-            bestBranch={run?.bestBranch ?? []}
-            done={phase === "done"}
-            animating={animating}
-            paused={paused}
-            loading={phase === "loading"}
-            onTogglePause={() => setPaused((p) => !p)}
-            onReplay={replay}
-            selected={selected}
-            onSelect={(id) => setSelected(id)}
-          />
-        </div>
+          <StatCards run={run} phase={phase} />
 
-        <StatCards run={run} phase={phase} />
+          <div className="grid gap-5 lg:grid-cols-2">
+            <RunLog run={run} revealed={revealed} />
+            <BestBranch branch={branch} visibleCount={branchVisible} />
+          </div>
 
-        <div className="grid gap-5 lg:grid-cols-2">
-          <RunLog run={run} revealed={revealed} />
-          <BestBranch branch={branch} visibleCount={branchVisible} />
-        </div>
+          <footer className="border-t border-divider pt-4 pb-8">
+            <p
+              className="text-ink-secondary"
+              style={{ fontSize: "var(--fs-caption)", lineHeight: 1.6, maxWidth: "72ch" }}
+            >
+              This demo visualizes the best-first tree-search scaffold from{" "}
+              <a
+                href="https://github.com/dev4aibots/deep-research-orchestrator"
+                target="_blank"
+                rel="noreferrer"
+                className="font-mono underline hover:no-underline"
+              >dev4aibots/deep-research-orchestrator</a>,
+              running the real ported algorithm. Every experiment metric is
+              simulated: no web research happens, no model plans the ideas, no
+              real experiments run, and no money is spent. Same seed →
+              identical trace.
+            </p>
+          </footer>
+        </main>
 
-        <footer className="border-t border-divider pt-4 pb-8">
-          <p
-            className="text-ink-secondary"
-            style={{ fontSize: "var(--meta-text-caption)", lineHeight: 1.5 }}
-          >
-            An interactive visualisation of the best-first tree-search scaffold
-            from <a
-              href="https://github.com/dev4aibots/deep-research-orchestrator"
-              target="_blank"
-              rel="noreferrer"
-              className="font-mono underline hover:no-underline"
-            >dev4aibots/deep-research-orchestrator</a>,
-            running the real ported algorithm. All experiment metrics are
-            simulated: no web research happens, no LLM plans the expansions, no
-            real experiments run, and no budget is spent. Same seed → identical
-            trace.
-          </p>
-        </footer>
-      </main>
-
-      <NodeInspector
-        node={selected !== null && run ? (run.nodes[String(selected)] ?? null) : null}
-        stats={run?.stats ?? null}
-        open={selected !== null}
-        onOpenChange={(o) => {
-          if (!o) setSelected(null);
-        }}
-      />
-    </TooltipProvider>
+        <NodeInspector
+          node={selected !== null && run ? (run.nodes[String(selected)] ?? null) : null}
+          stats={run?.stats ?? null}
+          open={selected !== null}
+          onOpenChange={(o) => {
+            if (!o) setSelected(null);
+          }}
+        />
+      </TooltipProvider>
+    </MotionConfig>
   );
 }

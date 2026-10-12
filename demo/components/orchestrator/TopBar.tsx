@@ -18,25 +18,25 @@ export function TopBar() {
         </span>
         <div className="min-w-0">
           <h1
-            className="font-bold text-ink leading-tight truncate"
-            style={{ fontSize: "var(--meta-text-h3)" }}
+            className="font-display font-bold text-ink leading-tight truncate"
+            style={{ fontSize: "var(--fs-lead)" }}
           >
-            Research Orchestrator
+            Deep Research Orchestrator
           </h1>
           <p
             className="text-ink-secondary truncate"
-            style={{ fontSize: "var(--meta-text-caption)" }}
+            style={{ fontSize: "var(--fs-caption)" }}
           >
-            best-first tree search over experiment configs — simulated scaffold
+            Ask a hard question. Watch the search spend its budget.
           </p>
         </div>
         <div className="ml-auto flex items-center gap-2">
           <Badge
             variant="outline"
             className="border-warning text-ink-secondary"
-            style={{ fontSize: "var(--meta-text-caption)" }}
+            style={{ fontSize: "var(--fs-caption)" }}
           >
-            simulated metrics
+            Simulated metrics — no real experiments
           </Badge>
         </div>
       </div>

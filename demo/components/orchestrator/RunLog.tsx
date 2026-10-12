@@ -64,8 +64,8 @@ export function RunLog({ run, revealed }: Props) {
   return (
     <Card className="shadow-card">
       <CardHeader className="pb-2">
-        <CardTitle style={{ fontSize: "var(--meta-text-h3)" }}>
-          Run log
+        <CardTitle className="font-display" style={{ fontSize: "var(--fs-h3)" }}>
+          Search log
         </CardTitle>
       </CardHeader>
       <CardContent>
@@ -77,14 +77,14 @@ export function RunLog({ run, revealed }: Props) {
           {lines.length === 0 ? (
             <p
               className="p-4 text-ink-secondary font-mono"
-              style={{ fontSize: "var(--meta-text-secondary)" }}
+              style={{ fontSize: "var(--fs-body)" }}
             >
-              {"$ waiting for a run"} — the trace will stream here line by line.
+              {"$ waiting for a run"} — each line is one simulated experiment, written as the search runs.
             </p>
           ) : (
             <pre
               className="p-4 font-mono text-ink-secondary whitespace-pre-wrap"
-              style={{ fontSize: "var(--meta-text-secondary)", lineHeight: 1.5 }}
+              style={{ fontSize: "var(--fs-body)", lineHeight: 1.5 }}
               aria-live="polite"
             >
               {lines.map((l, i) => {
@@ -93,7 +93,7 @@ export function RunLog({ run, revealed }: Props) {
                 return (
                   <div
                     key={i}
-                    className={fail ? "text-alert-red" : ok ? "text-ink" : undefined}
+                    className={`log-line ${fail ? "text-danger" : ok ? "text-ink" : ""}`}
                   >
                     {l || " "}
                   </div>
@@ -104,10 +104,10 @@ export function RunLog({ run, revealed }: Props) {
         </ScrollArea>
         <p
           className="text-ink-secondary mt-2"
-          style={{ fontSize: "var(--meta-text-caption)" }}
+          style={{ fontSize: "var(--fs-caption)" }}
         >
-          Trace format mirrors main.py — costs and losses are simulated, no real
-          experiments run.
+          The trace reads like the original main.py output. Costs and losses
+          are simulated; nothing really runs.
         </p>
       </CardContent>
     </Card>

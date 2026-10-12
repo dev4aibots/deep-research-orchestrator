@@ -1,4 +1,4 @@
-# PORT_NOTES — deep-research-orchestrator: Python → TypeScript
+# PORT_NOTES: deep-research-orchestrator, Python to TypeScript
 
 Source of truth: `../source/main.py` (dev4aibots/deep-research-orchestrator).
 Port: `lib/treesearch.ts` + `lib/prng.ts`, tested by `lib/treesearch.test.ts`
@@ -31,7 +31,7 @@ Port: `lib/treesearch.ts` + `lib/prng.ts`, tested by `lib/treesearch.test.ts`
 
 ## RNG decision: why not bit-identical to CPython
 
-`main.py` uses `random.Random(7)` — CPython's Mersenne Twister with CPython's
+`main.py` uses `random.Random(7)`, CPython's Mersenne Twister with CPython's
 integer-seed `init_by_array` seeding. Reproducing its exact stream in JS would
 require reimplementing MT19937 *and* that seeding ritual. The demo does not do
 this, per the build brief. Instead:
@@ -56,11 +56,11 @@ The source repo is honest about being a scaffold, and the demo must be too:
 2. **No LLM planning.** The planner is stubbed: children are proposed by fixed small-edit expansion (`sparsity top-{4,8,16}`, `lr={3e-4,1e-3}`), not by any model.
 3. **No real experiments.** `run_experiment` fabricates metrics from a closed-form toy formula plus noise (`3.0 - 0.3*(1-|sp-8|/16) + noise`). There is no Docker, no sandbox, no PyTorch, no GPU. `cost_usd` is fake money.
 4. **Novelty/quality are toy scores**, not peer review. `quality = max(0, 1-(loss-2.5)/1.5)` is arithmetic, not judgement.
-5. **Failures are simulated** (`oom_killed_by_cgroup` at 10% draw, `loss_diverged` past 4.0) — no container was harmed.
+5. **Failures are simulated** (`oom_killed_by_cgroup` at 10% draw, `loss_diverged` past 4.0); no container was harmed.
 6. Say what it IS: *"an interactive visualisation of the best-first tree-search scaffold from dev4aibots/deep-research-orchestrator, running the real ported algorithm with simulated experiment metrics."*
 
 ## Known limits of this port
 
 - Numeric traces differ from CPython (see RNG decision). Structural parity is tested; numeric parity is explicitly out of scope.
-- `pyRound` implements round-half-to-even on the scaled float; CPython's `round()` is correctly-rounded decimal — edge-case ties on adversarial inputs could differ by 0.001. No such case occurs in the tested traces.
+- `pyRound` implements round-half-to-even on the scaled float; CPython's `round()` is correctly-rounded decimal, so edge-case ties on adversarial inputs could differ by 0.001. No such case occurs in the tested traces.
 - API-level guards (`budget ≤ 100000`, `maxNodes ≤ 2000`, `seed ≤ 500 chars`) are transport safety caps for the serverless function, not part of the algorithm.
