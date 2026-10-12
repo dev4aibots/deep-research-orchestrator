@@ -79,7 +79,7 @@ export function RunLog({ run, revealed }: Props) {
               className="p-4 text-ink-secondary font-mono"
               style={{ fontSize: "var(--meta-text-secondary)" }}
             >
-              $ waiting for a run — the trace will stream here line by line.
+              {"$ waiting for a run"} — the trace will stream here line by line.
             </p>
           ) : (
             <pre

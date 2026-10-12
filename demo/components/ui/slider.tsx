@@ -9,18 +9,28 @@ function Slider({
   max = 100,
   ...props
 }: SliderPrimitive.Root.Props) {
-  const _values = Array.isArray(value)
+  // Base UI expects array values; callers pass a single number for
+  // single-thumb sliders. Normalise to an array so the root and the
+  // rendered thumb count always agree — otherwise a scalar `value`
+  // falls through to [min, max] and two identical thumbs are rendered.
+  const normalizedValue = Array.isArray(value)
     ? value
-    : Array.isArray(defaultValue)
-      ? defaultValue
-      : [min, max]
+    : value !== undefined
+      ? [value]
+      : undefined;
+  const normalizedDefaultValue = Array.isArray(defaultValue)
+    ? defaultValue
+    : defaultValue !== undefined
+      ? [defaultValue]
+      : undefined;
+  const _values = normalizedValue ?? normalizedDefaultValue ?? [min];
 
   return (
     <SliderPrimitive.Root
       className={cn("data-horizontal:w-full data-vertical:h-full", className)}
       data-slot="slider"
-      defaultValue={defaultValue}
-      value={value}
+      defaultValue={normalizedDefaultValue}
+      value={normalizedValue}
       min={min}
       max={max}
       thumbAlignment="edge"

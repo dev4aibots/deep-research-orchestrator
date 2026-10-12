@@ -120,7 +120,7 @@ export default function Page() {
           </div>
         )}
 
-        <div ref={resultsRef} className="scroll-mt-4 grid gap-5 lg:grid-cols-[380px_minmax(0,1fr)]">
+        <div ref={resultsRef} className="scroll-mt-[72px] grid gap-5 lg:grid-cols-[380px_minmax(0,1fr)]">
           <ControlPanel
             params={params}
             onChange={setParams}
@@ -157,7 +157,12 @@ export default function Page() {
             style={{ fontSize: "var(--meta-text-caption)", lineHeight: 1.5 }}
           >
             An interactive visualisation of the best-first tree-search scaffold
-            from <span className="font-mono">dev4aibots/deep-research-orchestrator</span>,
+            from <a
+              href="https://github.com/dev4aibots/deep-research-orchestrator"
+              target="_blank"
+              rel="noreferrer"
+              className="font-mono underline hover:no-underline"
+            >dev4aibots/deep-research-orchestrator</a>,
             running the real ported algorithm. All experiment metrics are
             simulated: no web research happens, no LLM plans the expansions, no
             real experiments run, and no budget is spent. Same seed → identical

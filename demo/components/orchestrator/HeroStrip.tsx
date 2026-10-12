@@ -48,7 +48,14 @@ export function HeroStrip({ onRun }: { onRun: () => void }) {
           className="font-semibold text-link mb-2"
           style={{ fontSize: "var(--meta-text-secondary)" }}
         >
-          dev4aibots / deep-research-orchestrator
+          <a
+            href="https://github.com/dev4aibots/deep-research-orchestrator"
+            target="_blank"
+            rel="noreferrer"
+            className="hover:underline"
+          >
+            dev4aibots / deep-research-orchestrator
+          </a>
         </p>
         <h2
           className="font-bold text-ink-header max-w-[22ch]"
