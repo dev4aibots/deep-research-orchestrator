@@ -1,0 +1,164 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * Meta design-token table (DESIGN.md §3) — implemented VERBATIM.
+ * Components must read these vars; never use raw hex/px in components.
+ */
+:root {
+  /* ---- Brand (Meta official logo color codes) ---- */
+  --meta-brand-primary: #0668e1;
+  --meta-brand-fb: #1877f2;
+  --meta-brand-deep: #0064d1;
+  --meta-blue-link: #216fdb;
+  --meta-button-primary-bg: #0866ff;
+  --meta-button-primary-pressed: #77a7ff;
+  --meta-button-deemph-bg: #ebf5ff;
+  --meta-toggle-active-bg: #e7f3ff;
+  --meta-text-highlight: rgba(24, 119, 242, 0.2);
+
+  /* ---- Surfaces (Facebook web product) ---- */
+  --meta-app-bg: #f0f2f5;
+  --meta-card: #ffffff;
+  --meta-card-flat: #f7f8fa;
+  --meta-wash: #e4e6eb;
+
+  /* ---- Text (FDS) ---- */
+  --meta-text-primary: #050505;
+  --meta-text-secondary: #65676b;
+  --meta-text-disabled: #bcc0c4;
+  --meta-text-inverse: #ffffff;
+  --meta-text-header: #1c2b33;
+
+  /* ---- Borders / dividers (FDS) ---- */
+  --meta-divider: #ced0d4;
+  --meta-input-border: #ced0d4;
+
+  /* ---- Buttons (FDS) ---- */
+  --meta-button-secondary-bg: #e4e6eb;
+  --meta-button-secondary-text: #050505;
+
+  /* ---- Status ---- */
+  --meta-positive: #31a24c;
+  --meta-positive-bg: #deefe1;
+  --meta-negative: #e41e3f;
+  --meta-alert-red: #fa383e;
+  --meta-warning-amber: #f7b928;
+
+  /* ---- Radius (FDS) ---- */
+  --meta-radius-button: 6px;
+  --meta-radius-button-md: 10px;
+  --meta-radius-button-lg: 12px;
+  --meta-radius-card: 8px;
+  --meta-radius-lg: 12px;
+  --meta-radius-full: 999px;
+
+  /* ---- Shadows (FDS) ---- */
+  --meta-shadow-1: rgba(0, 0, 0, 0.1);
+  --meta-shadow-2: rgba(0, 0, 0, 0.2);
+  --meta-shadow-card: 0 1px 2px rgba(0, 0, 0, 0.1);
+  --meta-shadow-elevated: 0 8px 20px 0 rgba(0, 0, 0, 0.2),
+    0 2px 4px 0 rgba(0, 0, 0, 0.1);
+
+  /* ---- Typography ---- */
+  --meta-font-ui: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Helvetica, Arial, sans-serif;
+  --meta-font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas,
+    "Liberation Mono", monospace;
+
+  /* ---- Type scale ---- */
+  --meta-text-hero: 40px;
+  --meta-text-h1: 28px;
+  --meta-text-h2: 20px;
+  --meta-text-h3: 17px;
+  --meta-text-body: 15px;
+  --meta-text-secondary: 13px;
+  --meta-text-caption: 12px;
+
+  /* ---- Spacing (4px base) ---- */
+  --meta-space-1: 4px;
+  --meta-space-2: 8px;
+  --meta-space-3: 12px;
+  --meta-space-4: 16px;
+  --meta-space-5: 20px;
+  --meta-space-6: 24px;
+  --meta-space-8: 32px;
+  --meta-space-12: 48px;
+
+  /* ---- Motion (functional only) ---- */
+  --meta-motion-micro: 100ms;
+  --meta-motion-short: 200ms;
+  --meta-motion-medium: 300ms;
+  --meta-motion-long: 500ms;
+  --meta-easing-hover: ease-out;
+
+  /* ---- Z-index ---- */
+  --meta-z-default: 1;
+  --meta-z-sticky: 10;
+  --meta-z-dropdown: 50;
+  --meta-z-overlay: 100;
+  --meta-z-modal: 200;
+  --meta-z-popover: 300;
+
+  /* ---- Layout ---- */
+  --meta-header-height: 56px;
+
+  /* shadcn theme, wired to Meta tokens */
+  --background: var(--meta-app-bg);
+  --foreground: var(--meta-text-primary);
+  --primary: var(--meta-button-primary-bg);
+  --primary-foreground: var(--meta-text-inverse);
+  --secondary: var(--meta-button-secondary-bg);
+  --secondary-foreground: var(--meta-button-secondary-text);
+  --muted: var(--meta-card-flat);
+  --muted-foreground: var(--meta-text-secondary);
+  --accent: var(--meta-button-deemph-bg);
+  --accent-foreground: var(--meta-brand-deep);
+  --destructive: var(--meta-alert-red);
+  --destructive-foreground: var(--meta-text-inverse);
+  --card: var(--meta-card);
+  --card-foreground: var(--meta-text-primary);
+  --popover: var(--meta-card);
+  --popover-foreground: var(--meta-text-primary);
+  --border: var(--meta-divider);
+  --input: var(--meta-input-border);
+  --ring: var(--meta-blue-link);
+  --radius: var(--meta-radius-button);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--meta-font-ui);
+    font-size: var(--meta-text-body);
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+/* DESIGN.md §4 keyword enforcement */
+@layer base {
+  :focus-visible {
+    outline: 2px solid var(--meta-blue-link);
+    outline-offset: 2px;
+  }
+}
+
+/* Theme the shadcn defaults onto Meta tokens: FDS button radius is 6px. */
+@layer components {
+  .group\/button {
+    border-radius: var(--meta-radius-button);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
