@@ -1,6 +1,6 @@
 # Deep Research Orchestrator
 
-🚀 **Live demo:** https://deep-research-orchestrator-demo-14abptrbc-dev4aibots.vercel.app
+🚀 **Live demo:** https://deep-research-orchestrator-demo.vercel.app
 
 
 > 🧪 **Learning build** — a course/tutorial project for studying agentic deep-research workflows. Not a production system.
