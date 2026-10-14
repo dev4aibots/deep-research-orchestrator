@@ -31,7 +31,10 @@ export function StatCards({ run, phase }: Props) {
       value: stats ? `$${stats.spent.toFixed(2)}` : "–",
       sub: stats ? (
         <div className="mt-2">
-          <Progress value={Math.min(100, budgetPct)} />
+          {/* Decorative: the "$X.XX" value and "of $Y budget" text already
+              convey this to assistive tech. aria-hidden keeps the progressbar
+              (including its visually-hidden fallback glyph) out of the AX tree. */}
+          <Progress value={Math.min(100, budgetPct)} aria-hidden="true" />
           <p
             className="text-ink-secondary mt-1"
             style={{ fontSize: "var(--fs-caption)" }}

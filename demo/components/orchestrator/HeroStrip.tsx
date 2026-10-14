@@ -17,9 +17,10 @@ interface Props {
   onSeedChange: (seed: string) => void;
   onRun: () => void;
   running: boolean;
+  budget: number;
 }
 
-export function HeroStrip({ seed, onSeedChange, onRun, running }: Props) {
+export function HeroStrip({ seed, onSeedChange, onRun, running, budget }: Props) {
   const [motionOk, setMotionOk] = useState(false);
   const [ambientOn, setAmbientOn] = useState(true);
 
@@ -108,16 +109,22 @@ export function HeroStrip({ seed, onSeedChange, onRun, running }: Props) {
               className="flex-1"
               style={{ fontSize: "var(--fs-body)" }}
             />
-            <Button type="submit" size="lg" disabled={running || seed.trim().length === 0}>
+            <Button
+              type="submit"
+              size="lg"
+              disabled={running || seed.trim().length === 0}
+              aria-describedby="hero-budget-note"
+            >
               <Play className="mr-2 h-4 w-4" />
               {running ? "Running…" : "Run the search"}
             </Button>
           </div>
           <p
+            id="hero-budget-note"
             className="text-ink-secondary mt-2 px-1"
             style={{ fontSize: "var(--fs-caption)" }}
           >
-            Runs on a $30 pretend budget. Same question, same seed, same tree.
+            Runs on a ${budget} pretend budget. Same question, same seed, same tree.
           </p>
         </form>
 

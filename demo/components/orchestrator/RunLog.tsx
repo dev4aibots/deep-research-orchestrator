@@ -29,6 +29,13 @@ export function RunLog({ run, revealed }: Props) {
     for (let i = 0; i < Math.min(revealed, run.events.length); i++) {
       lines.push(fmtEventLine(run.events[i]));
     }
+    if (!showAll) {
+      // The trace reveals progressively while the search animates; say so
+      // explicitly so a partial trace is never mistaken for the full one.
+      lines.push(
+        `    … revealing experiments (${Math.min(revealed, run.events.length)} of ${run.events.length} shown) …`,
+      );
+    }
     if (showAll) {
       lines.push("");
       if (run.budgetExhausted) {
@@ -58,7 +65,14 @@ export function RunLog({ run, revealed }: Props) {
     const viewport = rootRef.current?.querySelector(
       '[data-slot="scroll-area-viewport"]',
     );
-    viewport?.scrollTo({ top: viewport.scrollHeight, behavior: "auto" });
+    if (!viewport) return;
+    // Stick to the bottom only while the user is already near it; never yank
+    // the scroll away from someone reading earlier lines mid-reveal.
+    const nearBottom =
+      viewport.scrollHeight - viewport.scrollTop - viewport.clientHeight < 48;
+    if (nearBottom) {
+      viewport.scrollTo({ top: viewport.scrollHeight, behavior: "auto" });
+    }
   }, [revealed, run]);
 
   return (

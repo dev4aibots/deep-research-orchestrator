@@ -108,6 +108,7 @@ export default function Page() {
           onSeedChange={(seed) => setParams((p) => ({ ...p, seed }))}
           onRun={runSearch}
           running={busy}
+          budget={params.budget}
         />
 
         <main className="max-w-[1200px] mx-auto px-4 py-6 space-y-5">
