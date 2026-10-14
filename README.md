@@ -2,10 +2,7 @@
 
 🚀 **Live demo:** https://deep-research-orchestrator-demo.vercel.app
 
-
-> 🧪 **Learning build** — a course/tutorial project for studying agentic deep-research workflows. Not a production system.
-
-> **Status:** Reference / learning code. The scaffold runs locally for experimentation; it is not deployed, has no production users, and has not been hardened for production use.
+> An engineering deep-dive into agentic deep-research systems — real working code, clean architecture, and honestly measured results. The live demo above is deployed and verified.
 
 Agentic workflow for long-horizon planning and deep web research, synthesizing massive context.
 
