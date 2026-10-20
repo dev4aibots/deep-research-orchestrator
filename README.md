@@ -1,12 +1,12 @@
 # Deep Research Orchestrator
 
-🚀 **Live demo:** https://deep-research-orchestrator-demo.vercel.app
+**Live demo:** https://deep-research-orchestrator-demo.vercel.app
 
 > An engineering deep-dive into agentic deep-research systems — real working code, clean architecture, and honestly measured results. The live demo above is deployed and verified.
 
 Agentic workflow for long-horizon planning and deep web research, synthesizing massive context.
 
-[ Demo ] [ Architecture ] [ API Docs ] [ Evaluation ]
+[Demo](demo.gif) · [Architecture](docs/architecture.md) · [Evaluation](docs/evaluation.md)
 
 ![Terminal Demo](demo.gif)
 
