@@ -120,7 +120,7 @@ export function ControlPanel({ params, onChange, onRun, onReset, running }: Prop
             <Play className="mr-2 h-4 w-4" />
             {running ? "Running…" : "Run the search"}
           </Button>
-          <Button variant="secondary" onClick={onReset} disabled={running} aria-label="reset the search settings">
+          <Button variant="secondary" onClick={onReset} disabled={running} aria-label="reset the search settings" title="Reset">
             <RotateCcw className="h-4 w-4" />
           </Button>
         </div>

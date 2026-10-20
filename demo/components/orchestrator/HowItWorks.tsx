@@ -45,7 +45,8 @@ export function HowItWorks() {
         className="text-ink-secondary mt-2"
         style={{ fontSize: "var(--fs-body)", lineHeight: 1.55, maxWidth: "62ch" }}
       >
-        Four steps, repeated until the pretend budget runs out. No web research
+        Four steps, repeated until the search reaches the ideas cap or the
+        pretend budget runs out, whichever comes first. No web research
         happens here: the “experiments” are simulated numbers from a fixed
         formula.
       </p>
