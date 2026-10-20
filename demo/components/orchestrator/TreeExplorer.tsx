@@ -117,7 +117,7 @@ export function TreeExplorer(props: Props) {
   }, [nodes, events, revealed, bestBranch, done]);
 
   return (
-    <Card className="shadow-card">
+    <Card className={`shadow-card${props.animating || props.loading ? " du-beam-run" : ""}`}>
       <CardHeader className="pb-2">
         <div className="flex flex-wrap items-center gap-2">
           <CardTitle style={{ fontSize: "var(--fs-h3)" }}>
@@ -245,7 +245,7 @@ export function TreeExplorer(props: Props) {
                   return (
                     <g
                       key={id}
-                      className="node-enter"
+                      className="node-enter du-node-pulse"
                       transform={`translate(${p.x},${p.y})`}
                       onClick={() => props.onSelect(id)}
                       style={{ cursor: "pointer" }}

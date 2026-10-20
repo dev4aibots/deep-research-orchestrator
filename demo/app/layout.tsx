@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "@fontsource-variable/archivo/wdth.css";
 import "./globals.css";
+import "./design-overlay.css";
 
 export const metadata: Metadata = {
   title: "Deep Research Orchestrator — watch a tree search spend its budget",

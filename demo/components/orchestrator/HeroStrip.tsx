@@ -38,7 +38,7 @@ export function HeroStrip({ seed, onSeedChange, onRun, running, budget }: Props)
   };
 
   return (
-    <section className="relative overflow-hidden bg-card border-b border-divider">
+    <section className="du-orb-warm relative overflow-hidden bg-card border-b border-divider">
       {/* Ambient Ballpit field, Meta blue tints only; paused when the user
           prefers reduced motion (design/DESIGN.md section 4). */}
       <div className="absolute inset-0 pointer-events-none" aria-hidden>

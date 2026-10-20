@@ -25,9 +25,9 @@ export function BestBranch({ branch, visibleCount }: Props) {
     return () => mq.removeEventListener("change", onChange);
   }, []);
   return (
-    <Card className="shadow-card">
+    <Card className="shadow-card du-editorial-report">
       <CardHeader className="pb-2">
-        <CardTitle className="font-display" style={{ fontSize: "var(--fs-h3)" }}>
+        <CardTitle className="font-display du-sec-head" style={{ fontSize: "var(--fs-h3)" }}>
           Best chain of ideas
         </CardTitle>
         <p
