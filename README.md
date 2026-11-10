@@ -97,3 +97,8 @@ The `docs/` directory contains deep-dives into the system:
 - `docs/engineering-decisions.md`
 - `docs/evaluation.md`
 - `docs/limitations.md`
+## Proof & Evidence
+
+- **Real algorithm:** best-first tree-search (budget, seed, ideas cap) ported from main.py and running in the browser
+- **Honest label:** every experiment metric is simulated; no web research, no money spent — stated in the demo itself
+- **Deterministic:** same seed → identical trace (replayable)
