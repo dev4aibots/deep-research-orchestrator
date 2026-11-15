@@ -1,12 +1,14 @@
-setup:
-	python -m venv venv
-	venv/bin/pip install -r requirements.txt
+.PHONY: test typecheck dev build
 
 test:
-	venv/bin/python -m unittest discover tests
+	python main.py
+	cd demo && npm test
 
-run:
-	npm run dev
+typecheck:
+	cd demo && npm run typecheck
 
-eval:
-	venv/bin/python evals/run_eval.py
+dev:
+	cd demo && npm run dev
+
+build:
+	cd demo && npm ci && npm run build

@@ -2,103 +2,83 @@
 
 **Live demo:** https://deep-research-orchestrator-demo.vercel.app
 
-> An engineering deep-dive into agentic deep-research systems — real working code, clean architecture, and honestly measured results. The live demo above is deployed and verified.
-
-Agentic workflow for long-horizon planning and deep web research, synthesizing massive context.
-
-[Demo](demo.gif) · [Architecture](docs/architecture.md) · [Evaluation](docs/evaluation.md)
-
-![Terminal Demo](demo.gif)
-
-Python • Playwright • Celery • LangChain
-
-## What it does
-Agentic workflow for long-horizon planning and deep web research, synthesizing massive context. This repository is a learning scaffold — core logic, evaluation harnesses, and example configs for study and experimentation, not hardened for production use.
-
-## Execution Trace (Proof of Work)
+A best-first tree search over research experiments: expand a hypothesis, pay for it out of a budget, score it on novelty × quality, and keep going until the budget or the depth runs out. The search is real, deterministic and tested. The experiments it plans are simulated, and the demo says so on the page.
 
 ```text
-Topic: "Quantum Computing Trends 2026"
-
-[Planner] Decomposing task...
--> Subtask 1: Search ArXiv for 2025/2026 papers.
--> Subtask 2: Search tech blogs for commercial hardware updates.
-
-[Worker 1] Scraping ArXiv... (Found 14 relevant papers)
-[Worker 2] Scraping Web... (Found IBM and Google press releases)
-
-[Synthesizer] Merging data...
-[Reviewer] Critique: Missing information on error correction algorithms.
-[Planner] Dispatching new subtask for error correction...
-
-[SUCCESS] Final 12-page report generated.
+$ python main.py
+=== autonomous research agent: tree search (budget $30) ===
+    [ok ] node #01  hypo='sparsity top-4'  loss=2.762  $=1.46  cum=$1.46
+    [ok ] node #02  hypo='sparsity top-8'  loss=2.726  $=1.35  cum=$2.81
+...
+nodes explored : 26
+budget spent   : $5.57 of $30.00
+failed nodes   : 0
+(writer + reviewer + red-team steps would run here; stubbed for the scaffold)
 ```
 
-## Evaluation & Performance
+## What is actually implemented
 
-Average Subtasks Generated: 6.4
-Web Scraping Success Rate: 89%
-Average Execution Time: 4m 12s
-Context window utilization: ~94,000 tokens per report
+| Piece | Where | Status |
+|---|---|---|
+| Best-first tree search with budget accounting, depth limit and a quality/novelty score | [`main.py`](main.py) | real, stdlib only, runs in under a second |
+| A line-by-line TypeScript port of the same algorithm for the browser demo | [`demo/lib/treesearch.ts`](demo/lib/treesearch.ts) | real; CPython differences documented in [`demo/PORT_NOTES.md`](demo/PORT_NOTES.md) |
+| 22 parity tests over scoring, budget cutoffs, expansion order and determinism | [`demo/lib/treesearch.test.ts`](demo/lib/treesearch.test.ts) | real; `npm test` in `demo/` prints `22 passed, 0 failed` |
+| Seeded PRNG so one question always produces one trace | [`demo/lib/prng.ts`](demo/lib/prng.ts) | real |
+| The demo console (Next.js 14, animated trace, node inspector) | [`demo/`](demo) | real UI over the ported engine |
 
-## Engineering Decisions
+## What is simulated, on purpose
 
-### Why a hierarchical delegate pattern?
-A single LLM prompt fails on complex tasks due to context exhaustion and wandering logic. The Planner-Worker-Reviewer hierarchy isolates concerns and enables parallel execution.
+- The LLM planner, the writer, the reviewer and the red-team stage are **stubs**. The trace ends by saying so.
+- The "experiments" return synthetic loss and dollar figures from a seeded RNG. No GPU, no PyTorch, no web search.
+- The deployed console carries a **SIMULATED** label and states that no research happens behind it.
 
-## Failure Analysis
+That boundary is the point of the project: the orchestration primitive is separable from the expensive parts, so it can be built, tested and replayed without a compute bill. It is not a research product and it produces no research findings.
 
-Failure #1 — Getting stuck in CAPTCHA loops
-Workers endlessly retried scraping Cloudflare-protected sites.
-Fix: Implemented headless browser stealth plugins and a hard timeout fallback to standard search APIs.
+## Why the tree search is the interesting part
 
-## System Architecture
+Depth-first exploration of agent ideas spends the whole budget on the first branch that looks promising. Breadth-first exploration spends it evenly and never goes deep. Best-first with an explicit priority function is the smallest thing that does neither: it keeps a frontier, expands the node with the best expected value, and stops on a budget rather than on a hunch.
 
-```mermaid
-flowchart TD
-    A[Initial Prompt] --> B(Planner Agent)
-    B --> C[Task Queue]
-    C --> D[Web Search Worker]
-    C --> E[Data Extraction Worker]
-    D & E --> F(Synthesizer Agent)
-    F -->|Review| B
-    F --> G[Final Research Report]
-```
+Three details that make it behave:
 
-## My Contributions
+1. **Budget is a first-class cost, not a counter.** Each node carries a dollar cost, and expansion stops when the *cumulative* spend crosses the budget. A cheap unproductive branch is allowed; an expensive one is not.
+2. **Score is a product, not a sum.** `novelty × quality` means a very novel but low-quality idea cannot buy its way to the top, which is what a sum would let it do.
+3. **Failed nodes are kept.** A failed experiment is information; dropping it from the frontier is how agents repeat the same mistake three times.
 
-**Built independently as a portfolio project.**
-- Designed the system architecture and data flows.
-- Implemented the core logic, tool integrations, and evaluation metrics.
-- Optimized latency and context window management.
-- Deployed the API to Vercel Edge functions.
-
-## Developer Quickstart
+## Run it
 
 ```bash
-# 1. Clone
-git clone https://github.com/dev4aibots/deep-research-orchestrator.git
-cd deep-research-orchestrator
+# the algorithm, in Python, no dependencies
+python main.py
 
-# 2. Setup
-python -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
-cp .env.example .env
+# the demo console
+cd demo
+npm install
+npm run dev        # http://localhost:3000
 
-# 3. Test
-make test
+cd demo
+npm test           # 22 parity tests
+npm run typecheck  # tsc --noEmit
+npm run build      # production build
 ```
 
-## Documentation
+CI runs all four commands on Node 20, 22 and 24, and runs `python main.py` on Python 3.12.
 
-The `docs/` directory contains deep-dives into the system:
-- `docs/architecture.md`
-- `docs/engineering-decisions.md`
-- `docs/evaluation.md`
-- `docs/limitations.md`
-## Proof & Evidence
+## Repository layout
 
-- **Real algorithm:** best-first tree-search (budget, seed, ideas cap) ported from main.py and running in the browser
-- **Honest label:** every experiment metric is simulated; no web research, no money spent — stated in the demo itself
-- **Deterministic:** same seed → identical trace (replayable)
+```
+main.py                     the algorithm, dependency-free
+demo/lib/treesearch.ts      TypeScript port used by the console
+demo/lib/treesearch.test.ts 22 parity tests, no test framework required
+demo/lib/prng.ts            seeded PRNG (mulberry32)
+demo/app/                   Next.js app: trace animation, node inspector
+demo/PORT_NOTES.md          every deliberate difference from the Python original
+docs/                       architecture, engineering decisions, evaluation notes, limitations
+```
+
+## What this does not claim
+
+- No measured research quality, because no research runs.
+- No benchmark numbers for the tree search against other planners.
+- No production hardening: this is a scaffold that shows the primitive, not a service.
+
+The earlier revision of this README showed a fabricated 12-page research report, invented subtask counts and an invented 89% scraping success rate. None of that was ever produced by this code, so it has been removed rather than qualified.
